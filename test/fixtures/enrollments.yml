@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course_id: "10"
+  student_id: "20"
+
+two:
+  course_id: "11"
+  student_id: "21"
