@@ -1,0 +1,10 @@
+
+<%= render @waitlist %>
+
+<div>
+  <%= link_to "Edit this waitlist", edit_waitlist_path(@waitlist) %> |
+  <%= link_to "Back to waitlists", waitlists_path %>
+  <% if current_user.identifier == "0" or current_user.id.to_i == @waitlist.student_id.to_i %>
+    <%= button_to "Remove waitlist", @waitlist, method: :delete %>
+  <% end %>
+</div>

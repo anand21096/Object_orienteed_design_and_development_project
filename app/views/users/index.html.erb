@@ -1,0 +1,14 @@
+<h1>All users</h1>
+
+<div id="users">
+  <% @users.each do |user| %>
+    <% if user.identifier == "1" or  user.identifier == "2" %>
+      <%= render user %><p>
+      <%= link_to "Show this user", user %>
+    </p>
+    <% end %>
+    
+  <% end %>
+</div>
+
+<%= link_to "New User", new_user_path %>

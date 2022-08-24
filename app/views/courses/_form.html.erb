@@ -1,0 +1,174 @@
+<%= form_with model: @course, id: "create_course_form"  do |form| %>
+  <% if course.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h2>
+
+      <ul>
+        <% course.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
+    <%= form.label :instructor_id, 'Instructor ID', style: "display: block" %>
+    <% if logged_in? %>
+      <% if current_user.identifier == "2" %>
+        <%= form.text_field :instructor_id, value: current_user.id %>
+      <%end%>
+      <% if current_user.identifier == "0" %>
+        <%= form.text_field :instructor_id %>
+      <%end%>
+    <%end%>
+  </div>
+
+  <div>
+    <%= form.label :weekday_1, style: "display: block" %>
+    <%= form.select :weekday_1, ['MON', 'TUE', 'WED', 'THU', 'FRI']%>
+  </div>
+
+  <div>
+    <%= form.label :weekday_2, style: "display: block" %>
+    <%= form.select :weekday_2, ['','MON', 'TUE', 'WED', 'THU', 'FRI']%>
+  </div>
+
+  <div>
+    <%= form.label :start_time, style: "display: block" %>
+    <%= form.text_field :start_time %>
+  </div>
+
+  <div>
+    <%= form.label :end_time, style: "display: block" %>
+    <%= form.text_field :end_time %>
+  </div>
+
+  <div>
+    <%= form.label :course_code, style: "display: block" %>
+    <%= form.text_field :course_code %>
+  </div>
+
+  <div>
+    <%= form.label :capacity, style: "display: block" %>
+    <%= form.number_field :capacity %>
+  </div>
+
+  <div>
+    <%= form.label :waitlist_capacity, style: "display: block" %>
+    <%= form.number_field :waitlist_capacity %>
+  </div>
+
+  <div>
+    <%= form.label :room, style: "display: block" %>
+    <%= form.text_field :room %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+<script type="text/javascript">
+
+  var dic = {
+    "MON" : 1,
+    "TUE" : 2,
+    "WED" : 3,
+    "THU" : 4,
+    "FRI" : 5,
+    "" : 6
+  }
+
+
+  function validateDays(e) {
+    var course_weekday_1 = document.getElementById('course_weekday_1').value;
+    var course_weekday_2 = document.getElementById('course_weekday_2').value;
+    var w1 = dic[course_weekday_1];
+    var w2 = dic[course_weekday_2];
+    if(w1 > w2) {
+      alert("Weekday 2 should be after Weekday 1");
+      e.preventDefault();
+    }
+    if(course_weekday_1 == course_weekday_2) {
+      alert("Both Weekday 1 and Weekday 2 cannot be same");
+      e.preventDefault();
+    }
+  }
+
+  var st1 = null;
+  var st2 = null;
+
+  function startTimeValidation(e) {
+    var course_start_time_value = document.getElementById('course_start_time').value;
+    var course_start_time_value_arr = course_start_time_value.split(":");
+    st1 = parseInt(course_start_time_value_arr[0]);
+    st2 = parseInt(course_start_time_value_arr[1]);
+    if((st1 < 0 || st1 > 23) || (st2 < 0 || st2 > 59)){
+      alert(" Start Date format should be a 24 hr format in HH:MM between 00:00 to 23:59");
+      e.preventDefault();
+      return;
+    }
+  }
+
+  function endTimeValidation(e) {
+    var course_end_time_value = document.getElementById('course_end_time').value;
+    var course_end_time_value_arr = course_end_time_value.split(":");
+    var et1 = parseInt(course_end_time_value_arr[0]);
+    var et2 = parseInt(course_end_time_value_arr[1]);
+
+    console.log("et111", et1);
+
+    if( et1 < 0 || et1 > 23 || et2 < 0 || et2 > 59 || isNaN(et1) || isNaN(et2) ){
+      alert("End Date format should be a 24 hr format in HH:MM between 00:00 to 23:59");
+      e.preventDefault();
+      return;
+    } else if((et1 == st1 && et2 <= st2) || et1 < st1 || isNaN(et1) || isNaN(et2) ) {
+      alert("End time should be after start time");
+      e.preventDefault();
+      return;
+    }
+  }
+
+  function validateRoom(e) {
+    var course_room = document.getElementById('course_room').value;
+    if(!course_room){
+      if(course_room != "0") {
+        alert("Room cannot be empty");
+        e.preventDefault();
+      }
+    }
+  }
+
+  function validateCourseCode(e) {
+    var course_course_code = document.getElementById('course_course_code').value;
+    if((course_course_code.length != 6) || !(/[a-zA-Z][a-zA-Z][a-zA-Z]/.test(course_course_code.substring(0,3))) || !(/[0-9][0-9][0-9]/.test(course_course_code.substring(3,6))) ) {
+      alert("Course code is not in correct format");
+      e.preventDefault();
+    }
+  }
+
+  function doValidations(e) {
+    startTimeValidation(e);
+    endTimeValidation(e);
+    validateDays(e);
+    validateRoom(e);
+    validateCourseCode(e);
+  }
+
+  
+
+  var form_button = document.getElementById('create_course_form');
+  form_button.addEventListener("submit", doValidations, false);
+
+</script>

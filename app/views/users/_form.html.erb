@@ -1,0 +1,115 @@
+
+<% if current_user.identifier == "0" %>
+<h1>Edit User</h1>
+<% end %>
+
+<%= form_for @user, html: {id: :sign_up_form_id } do |f|%>
+
+  <% if @user.identifier == "0" %>
+    <%= f.label :username, id: :user_name_label %><br>
+    <%= f.text_field :username, :required => true%><br>
+    <%= f.label :phone_no, id: :phone_no_label %><br>
+    <%= f.text_field :phone_no%><br>
+  <% else %>
+    <%= f.label :username, id: :user_name_label %><br>
+    <%= f.text_field :username, :required => true%><br>
+    <%= f.label :email_id, id: :email_id_label %><br>
+    <%= f.email_field :email_id, :required => true%><br>
+    <%= f.label :password, id: :password_label %><br>
+    <%= f.password_field :password%><br>
+
+    <% if @user.identifier == "1" %>
+    <%= f.label :phone_no, id: :phone_no_label %><br>
+    <%= f.text_field :phone_no%><br>
+    <%= f.label :date_of_birth, "Date Of Birth (Format should be in MM/DD/YYYY)", id: :date_of_birth_label %><br>
+    <%= f.text_field :date_of_birth%><br>
+    <%= f.label :major, id: :major_label %><br>
+    <%= f.text_field :major%><br>
+
+    <% elsif @user.identifier == "2" %>
+    <%= f.label :department, id: :department_label %><br>
+    <%= f.text_field :department%><br>
+
+    <% end %>
+  <% end %>
+  <%= f.submit %>
+<%end%>
+
+
+
+<script type="text/javascript">
+
+
+  function doValidations(e) {
+
+  var user_name_label = document.getElementById('user_name_label');
+  var user_username = document.getElementById('user_username').value;
+
+  var email_id_label = document.getElementById('email_id_label');
+  var user_email_id = document.getElementById('user_email_id').value;
+
+  var phone_no_label = document.getElementById('phone_no_label');
+  if(phone_no_label) {
+    var user_phone_no = document.getElementById('user_phone_no').value;
+  }
+
+  var department_label = document.getElementById('department_label');
+  if(department_label) {
+    var user_department = document.getElementById('user_department').value;
+  }
+
+  var date_of_birth_label = document.getElementById('date_of_birth_label');
+  if(date_of_birth_label) {
+    var user_date_of_birth = document.getElementById('user_date_of_birth').value;
+  }
+
+  var major_label = document.getElementById('major_label');
+  if(major_label) {
+    var user_major = document.getElementById('user_major').value;
+  }
+
+
+    if(user_name_label && !user_username) {
+      alert("Username cannot be empty");
+      e.preventDefault();
+    }
+
+    if(email_id_label && !user_email_id) {
+      alert("Email cannot be empty");
+      e.preventDefault();
+    }
+
+    if(phone_no_label && !user_phone_no) {
+      alert("Phone No cannot be empty");
+      e.preventDefault();
+    }
+
+    if(department_label && !user_department) {
+      alert("Department cannot be empty");
+      e.preventDefault();
+    }
+
+    if(date_of_birth_label && !user_date_of_birth) {
+      alert("Date of birth cannot be empty");
+      e.preventDefault();
+    }
+
+    if(major_label && !user_major) {
+      alert("Major cannot be empty");
+      e.preventDefault();
+    }
+
+
+    var email_idd = document.getElementById('user_email_id').value;
+    console.log("adfsd", email_idd)
+    if ( !(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/.test(email_idd)) ) {
+      alert("Please enter valid email id");
+      e.preventDefault();
+    }
+
+  e.preventDefault();
+  }
+
+  var form_button = document.getElementById('sign_up_form_id');
+  form_button.addEventListener("submit", doValidations, false);
+</script>

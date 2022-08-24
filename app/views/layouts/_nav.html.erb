@@ -1,0 +1,120 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
+  <div class="container-fluid">
+    <%= link_to "NC State", '/', class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <% if logged_in? %>
+        <!-- List all the courses (For everyone) -->
+        <li class="nav-item">
+          <%= button_to "All Courses", '/courses', method: :get%>
+        </li>
+        <% if current_user.identifier == "1" %>
+          <li class="nav-item">
+            <%= button_to "Enroll", '/enrollments/new', method: :get%>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Enter Waitlist", '/waitlists/new', method: :get%>
+          </li>
+        <% end %>
+
+        <% if current_user.identifier == "2" or current_user.identifier == "0" %>
+          <li class="nav-item">
+            <%= button_to "Enroll a student", '/enrollments/new', method: :get%>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Waitlist a student", '/waitlists/new', method: :get%>
+          </li>
+        <% end %>
+        <!-- only for students -->
+        <% if current_user.identifier == "1" %>
+          <li class="nav-item">
+            <%= button_to "My Enrollments", '/enrollments', method: :get%>
+          </li>
+          <li class="nav-item">
+            <%= button_to "My Waitlists", '/waitlists', method: :get%>
+          </li>
+        <% end %>
+
+        <% if current_user.identifier == "0" %>
+          <li class="nav-item">
+            <%= button_to "All Enrollments", '/allenrollments', method: :get%>
+          </li>
+          <li class="nav-item">
+            <%= button_to "All Waitlists", '/allWaitlists', method: :get%>
+          </li>
+          <li class="nav-item">
+            <%= button_to "All Students and Instructors", '/users', method: :get%>
+          </li>
+        <% end %>
+        
+
+        <% if current_user.identifier == "2" %>
+          <li class="nav-item">
+            <%= button_to "Enrollments in My Courses", '/myCourseEnrollments', method: :get%>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Waitlists in My Courses", '/myCourseWaitlists', method: :get%>
+          </li>
+        <li class="nav-item">
+          <%= button_to "View My Courses", '/courses/instructor', method: :get%>
+        </li>
+        <% end %>
+
+        <% if current_user.identifier == "2" or current_user.identifier == "0" %>
+        <li class="nav-item">
+          <%= button_to "Create Course", '/courses/new', method: :get%>
+        </li>
+        <% end %>
+
+
+        
+        <li class="nav-item">
+          <%= button_to "Edit Profile", "/users/#{current_user.id}/edit", method: :get%>
+        </li>
+        <li class="nav-item">
+          <%= button_to "Logout", '/logout', method: :delete%>
+        </li>
+
+        <% if current_user.identifier == "1" %>
+          <li class="nav-item">
+            Role: <b>Student</b>
+          </li>
+        <% end %>
+        <% if current_user.identifier == "2" %>
+          <li class="nav-item">
+            Role: <b> <i>Instructor</i> </b>
+          </li>
+        <% end %>
+        <% if current_user.identifier == "0" %>
+          <li class="nav-item" >
+            Role: <a style="text-decoration: underline; position: inline">Admin</a>
+          </li>
+        <% end %>
+            
+        <%end%>
+
+        <% if !logged_in? %>
+            <li class="nav-item">
+              <%= button_to "Login", '/login', method: :get%>
+            </li>
+            
+            <li class="nav-item">
+              <%= button_to "Sign Up", '/users/new', method: :get%>
+            </li>
+        <%end%>
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<% flash.each do |type, msg| %>
+  <div class="alert alert-info">
+    <%= msg %>
+  </div>
+<% end %>

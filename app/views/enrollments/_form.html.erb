@@ -1,0 +1,45 @@
+<%= form_with(model: enrollment) do |form| %>
+  <% if enrollment.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(enrollment.errors.count, "error") %> prohibited this enrollment from being saved:</h2>
+
+      <ul>
+        <% enrollment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- change this -->
+  <% if Course.where(status: "OPEN").count == 0 %>
+    <h1>There are no open courses available</h1>
+  <% else %>
+    <div>
+      <%= form.label :course_id, style: "display: block" %>
+      <%= select("enrollment", "course_id", Course.where(status: "OPEN").collect{ |c| [ c.name, c.name] }, :required => true) %>
+    </div>
+
+    <div>
+      <%= form.label :student_id, style: "display: block" %>
+
+      <% if logged_in? %>
+        <% if current_user.identifier == "1" %>
+          <%= form.text_field :student_id, value: current_user.id %>
+        <%end%>
+      <%end%>
+
+      <% if logged_in? %>
+        <% if current_user.identifier == "2" or current_user.identifier == "0" %>
+          <%= form.text_field :student_id %>
+        <%end%>
+      <%end%>
+
+    </div>
+
+    <div>
+      <%= form.submit "Enroll" %>
+    </div>
+
+  <% end %>
+<% end %>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @course %>
+
+<div>
+  <% if current_user.identifier == "0" or current_user.id == @course.instructor_id.to_i %>
+    <%= button_to "Destroy this course", @course, method: :delete %>
+    <%= link_to "Edit this course", edit_course_path(@course) %> 
+  <% end %>
+</div>

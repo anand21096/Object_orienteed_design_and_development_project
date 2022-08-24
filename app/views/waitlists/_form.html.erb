@@ -1,0 +1,47 @@
+<%= form_with(model: waitlist) do |form| %>
+  <% if waitlist.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(waitlist.errors.count, "error") %> prohibited this waitlist from being saved:</h2>
+
+      <ul>
+        <% waitlist.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+  <% if Course.where(status: "WAITLIST").count == 0 %>
+    <h1>There are no waitlist courses available</h1>
+  <% else %>
+    <div>
+      <%= form.label :course_id, style: "display: block" %>
+      <%= select("waitlist", "course_id", Course.where(status: "WAITLIST").collect{ |c| [ c.name, c.name] }, :required => true) %>
+    </div>
+
+    <div>
+      <%= form.label :student_id, style: "display: block" %>
+
+      <% if logged_in? %>
+        <% if current_user.identifier == "1" %>
+          <%= form.text_field :student_id, value: current_user.id %>
+        <%end%>
+      <%end%>
+
+      <% if logged_in? %>
+        <% if current_user.identifier == "2" or current_user.identifier == "0" %>
+          <%= form.text_field :student_id %>
+        <%end%>
+      <%end%>
+
+    </div>
+
+  <div>
+    <%= form.submit "Enter Waitlist" %>
+  </div>
+
+  <% end %>
+
+<% end %>

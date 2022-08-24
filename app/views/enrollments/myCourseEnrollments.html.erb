@@ -1,0 +1,31 @@
+
+<h1>Enrollments in my class</h1>
+
+<div id="enrollments">
+  <% @courses.each do |course| %>
+    
+    <% enrollments = Enrollment.where(course_id: course.name) %>
+
+        <% enrollments.each do |enrollment| %>
+
+            <p>
+                <strong>Course:</strong>
+                
+                <%= enrollment.course_id %>
+            </p>
+
+            <p>
+                <strong>Student:</strong>
+                <%= enrollment.student_id %>
+            </p>
+            <p>
+                <%= link_to "Show this enrollment", enrollment %>
+            </p>
+
+        <% end %>
+
+   
+  <% end %>
+</div>
+
+<%= link_to "New enrollment", new_enrollment_path %>

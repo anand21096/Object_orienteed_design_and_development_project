@@ -1,0 +1,155 @@
+
+<% if current_user %>
+<h1>Create Student or Instructor</h1>
+<% else %>
+
+<h1>Sign Up</h1>
+<% end %>
+
+<%= form_for @user, html: {id: :sign_up_form_id } do |f|%>
+  <p>
+    <b>Who are you?</b>
+    <%= f.radio_button :identifier, '1' %> Student<br />
+    <%= f.radio_button :identifier, '2' %> Instructor<br />
+  </p>
+  <%= f.label :username, id: :user_name_label %><br>
+  <%= f.text_field :username, :required => true%><br>
+  <%= f.label :email_id, id: :email_id_label %><br>
+  <%= f.email_field :email_id, :required => true%><br>
+  <%= f.label :password, id: :password_label %><br>
+  <%= f.password_field :password, :required => true%><br>
+  <%= f.label :phone_no, id: :phone_no_label %><br>
+  <%= f.text_field :phone_no%><br>
+  <%= f.label :department, id: :department_label %><br>
+  <%= f.text_field :department%><br>
+  <%= f.label :date_of_birth, "Date Of Birth (Format should be in MM/DD/YYYY)", id: :date_of_birth_label %> <br>
+  <%= f.text_field :date_of_birth%><br>
+  <%= f.label :major, id: :major_label %><br>
+  <%= f.text_field :major%><br>
+  
+  <%= f.submit %>
+<%end%>
+
+
+
+<script type="text/javascript">
+  function hideAllFields(e) {
+    user_name_label.style.display = "none";
+    user_username.style.display = "none";
+  }
+
+  var user_identifier_1 = document.getElementById('user_identifier_1');
+  var user_identifier_2 = document.getElementById('user_identifier_2');
+
+  var user_name_label = document.getElementById('user_name_label');
+  var user_username = document.getElementById('user_username');
+
+  var email_id_label = document.getElementById('email_id_label');
+  var user_email_id = document.getElementById('user_email_id');
+
+  var password_label = document.getElementById('password_label');
+  var user_password = document.getElementById('user_password');
+
+  var phone_no_label = document.getElementById('phone_no_label');
+  var user_phone_no = document.getElementById('user_phone_no');
+
+  var department_label = document.getElementById('department_label');
+  var user_department = document.getElementById('user_department');
+
+  var date_of_birth_label = document.getElementById('date_of_birth_label');
+  var user_date_of_birth = document.getElementById('user_date_of_birth');
+
+  var major_label = document.getElementById('major_label');
+  var user_major = document.getElementById('user_major');
+
+
+  var submit_button = document.querySelector("input[type='submit']");
+
+
+  user_name_label.style.display = "none";
+  user_username.style.display = "none";
+  email_id_label.style.display = "none";
+  user_email_id.style.display = "none";
+  password_label.style.display = "none";
+  user_password.style.display = "none";
+  phone_no_label.style.display = "none";
+  user_phone_no.style.display = "none";
+  department_label.style.display = "none";
+  user_department.style.display = "none";
+  date_of_birth_label.style.display = "none";
+  user_date_of_birth.style.display = "none";
+  major_label.style.display = "none";
+  user_major.style.display = "none";
+  submit_button.style.display = "none";
+
+  function showOnlyStudentFields (e) {
+      user_name_label.style.display = "block";
+      user_username.style.display = "block";
+      email_id_label.style.display = "block";
+      user_email_id.style.display = "block";
+      password_label.style.display = "block";
+      user_password.style.display = "block";
+      phone_no_label.style.display = "block";
+      user_phone_no.style.display = "block";
+      department_label.style.display = "none";
+      user_department.style.display = "none";
+      date_of_birth_label.style.display = "block";
+      user_date_of_birth.style.display = "block";
+      major_label.style.display = "block";
+      user_major.style.display = "block";
+  submit_button.style.display = "block";
+  }
+
+  function showOnlyInstructorFields(e) {
+      user_name_label.style.display = "block";
+      user_username.style.display = "block";
+      email_id_label.style.display = "block";
+      user_email_id.style.display = "block";
+      password_label.style.display = "block";
+      user_password.style.display = "block";
+      phone_no_label.style.display = "none";
+      user_phone_no.style.display = "none";
+      department_label.style.display = "block";
+      user_department.style.display = "block";
+      date_of_birth_label.style.display = "none";
+      user_date_of_birth.style.display = "none";
+      major_label.style.display = "none";
+      user_major.style.display = "none";
+  submit_button.style.display = "block";
+  }
+
+  user_identifier_1.addEventListener("click", showOnlyStudentFields, false);
+  user_identifier_2.addEventListener("click", showOnlyInstructorFields, false);
+
+  function doValidations(e) {
+    var student = user_identifier_1.checked;
+    var instructor = user_identifier_2.checked;
+    
+    if(student) {
+      var user_phone_no = document.getElementById('user_phone_no').value;
+      var user_date_of_birth = document.getElementById('user_date_of_birth').value;
+      var user_major = document.getElementById('user_major').value;
+      if(!user_phone_no || !user_date_of_birth || !user_major) {
+        alert("Please enter all the fields");
+        e.preventDefault();
+      }
+    }
+
+    if(instructor) {
+      var user_department = document.getElementById('user_department').value;
+      if(!user_department) {
+        alert("Please enter all the fields");
+        e.preventDefault();
+      }
+    }
+
+    var email_id = document.getElementById('user_email_id').value;
+    if ( !(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/.test(email_id)) ) {
+      alert("Please enter valid email id");
+      e.preventDefault();
+    }
+  }
+
+  var form_button = document.getElementById('sign_up_form_id');
+  form_button.addEventListener("submit", doValidations, false);
+</script>

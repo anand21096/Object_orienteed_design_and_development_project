@@ -1,0 +1,30 @@
+
+<h1>Waitlists in my class</h1>
+
+<div id="waitlists">
+  <% @courses.each do |course| %>
+    
+    <% waitlists = Waitlist.where(course_id: course.name) %>
+
+        <% waitlists.each do |waitlist| %>
+
+            <p>
+                <strong>Course:</strong>
+                
+                <%= waitlist.course_id %>
+            </p>
+
+            <p>
+                <strong>Student:</strong>
+                <%= waitlist.student_id %>
+            </p>
+            <p>
+                <%= link_to "Show this waitlist", waitlist %>
+            </p>
+
+        <% end %>
+
+   
+  <% end %>
+</div>
+
